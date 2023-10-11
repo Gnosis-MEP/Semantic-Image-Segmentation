@@ -5,6 +5,7 @@ from decouple import config
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SOURCE_DIR)
 MODELS_PATH = os.path.join(SOURCE_DIR, 'models')
+MASK_OUTPUTS_PATH = os.path.join(PROJECT_ROOT, 'outputs', 'masks')
 
 
 REDIS_ADDRESS = config('REDIS_ADDRESS', default='localhost')
