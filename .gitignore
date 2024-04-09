@@ -117,3 +117,7 @@ dmypy.json
 *.pt
 *.jpg
 *.png
+
+temp_proj/*
+test_input/*
+outputs/*

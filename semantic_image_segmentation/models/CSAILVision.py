@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 
 from PIL import Image
+import torch.nn.functional as F
 from torchvision import transforms
 
 from semantic_image_segmentation.conf import MODELS_PATH, MASK_OUTPUTS_PATH, SAMPLES_OUTPUTS_PATH, MORPH_KERNEL_SIZE
@@ -37,7 +38,8 @@ class MaskCreator():
         ]
 
         # self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet50', pretrained=True)
-        self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_mobilenet_v3_large', pretrained=True)
+        # self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_mobilenet_v3_large', pretrained=True)
+        self.model = torch.hub.load('milesial/Pytorch-UNet', 'unet_carvana', pretrained=True, scale=1)
         # or any of these variants
         # self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=True)
         self.model.eval()
@@ -51,17 +53,34 @@ class MaskCreator():
         ])
         input_tensor = transf(input_image)
         input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
-        return input_batch
 
+        # img = img.unsqueeze(0)
+        #     img = img.to(device=device, dtype=torch.float32)
+
+        return input_batch
     def predict(self, input_image):
         input_batch = self.preprocess(input_image)
         # move the input and model to GPU for speed if available
         if torch.cuda.is_available():
             input_batch = input_batch.to('cuda')
 
+
+#         output = net(img).cpu()
+#         output = F.interpolate(output, (full_img.size[1], full_img.size[0]), mode='bilinear')
+#         if net.n_classes > 1:
+#             mask = output.argmax(dim=1)
+#         else:
+#             mask = torch.sigmoid(output) > out_threshold
+
+#     return mask[0].long().squeeze().numpy()
         with torch.no_grad():
-            output = self.model(input_batch)['out'][0]
-        output_predictions = output.argmax(0)
+            # output = self.model(input_batch)['out'][0]
+            output = F.interpolate(self.model(input_batch), (input_image.size[1], input_image.size[0]), mode='bilinear')
+            mask = output.argmax(dim=1)[0].long().squeeze()
+        output_predictions = mask
+        import ipdb; ipdb.set_trace()
+
+
 
         # classes_idx_set = set()
         # for row in output_predictions:
@@ -143,3 +162,10 @@ if __name__ == '__main__':
     mask_creator = MaskCreator(input_dir, video_sub_seg_id, masked_class_labels)
     res = mask_creator.run()
     print(json.dumps(res, indent=4))
+    # ade20k-resnet50dilated-ppm_deepsup
+
+    # ENCODER=ade20k-resnet50dilated-ppm_deepsup/encoder_epoch_20.pth
+    # DECODER=ade20k-resnet50dilated-ppm_deepsup/decoder_epoch_20.pth
+
+    # ENCODER=$MODEL_NAME/encoder_epoch_20.pth
+    # DECODER=$MODEL_NAME/decoder_epoch_20.pth

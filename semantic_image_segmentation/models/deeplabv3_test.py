@@ -24,15 +24,10 @@ model.eval()
 
 
 
-url, filename = ("https://github.com/pytorch/hub/raw/master/images/deeplab1.png", "deeplab1.png")
-try:
-    urllib.URLopener().retrieve(url, filename)
-except:
-    urllib.request.urlretrieve(url, filename)
 
 
 
-input_image = Image.open(filename)
+input_image = Image.open('/home/arruda/projects/my-gnosis/semantic-image-segmentation/frame_1.png')
 input_image = input_image.convert("RGB")
 preprocess = transforms.Compose([
     transforms.ToTensor(),
@@ -66,10 +61,10 @@ for row in np_predicts:
 predict_class_labels = set()
 for class_idx in classes_idx_set:
     predict_class_labels.add(class_labels[class_idx])
-print(list(predict_class_labels))
+print(list(predict_class_labels), classes_idx_set)
 
 
-masked_classes_ids = [15, 17]
+masked_classes_ids = [15, 7]
 # np_predicts = output_predictions.byte().cpu().numpy()
 # np_predicts[(np_predicts == 15) | (np_predicts==12)] = 255
 for class_id in masked_classes_ids:
@@ -80,9 +75,9 @@ np_predicts[np_predicts != 255] = 0
 
 # plot the semantic segmentation predictions of 21 classes in each color
 semantic_mask = Image.fromarray(np_predicts).resize(input_image.size)
-import ipdb; ipdb.set_trace()
+# import ipdb; ipdb.set_trace()
 # semantic_mask.putpalette(colors)
-semantic_mask.save('new.jpg')
+semantic_mask.save('new_frame_1.png')
 
 
 plt.imshow(semantic_mask)
