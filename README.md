@@ -79,3 +79,6 @@ And, in order to make the automatic tests work, you should also set the rest of 
 
 ## Benchmark Tests
 To run the benchmark tests one needs to manually start the Benchmark stage in the CI pipeline, it shoud be enabled after the tests stage is done. Only by passing the benchmark tests shoud the image be tagged with 'latest', to show that it is a stable docker image.
+
+python semantic_image_segmentation/OI_mask_creator.py ../live-street-datasets/my-creations/selected/Subsets/TS-D-Q-1b-10S TS-D-Q-1b-10S car
+python semantic_image_segmentation/OI_mask_creator.py ./test_input/ teste car
