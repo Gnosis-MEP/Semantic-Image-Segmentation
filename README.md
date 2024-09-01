@@ -36,3 +36,7 @@ Outputs generated at:
 
 * Masks: `./outputs/masks/<sub_dataset_id>/<1stOIclass>_<2ndOIclass>/mask_frame_*.png`
 * OI containing Samples:  `./outputs/samples/<sub_dataset_id>/<1stOIclass>_<2ndOIclass>/frame_*.png`
+
+
+# License
+Licensed under AGPL. See License file for details.
