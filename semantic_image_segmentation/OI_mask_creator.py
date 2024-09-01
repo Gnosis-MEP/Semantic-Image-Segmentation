@@ -12,7 +12,13 @@ import numpy as np
 from PIL import Image
 from torchvision import transforms
 
-from semantic_image_segmentation.conf import MODELS_PATH, MASK_OUTPUTS_PATH, SAMPLES_OUTPUTS_PATH, MORPH_KERNEL_SIZE
+from semantic_image_segmentation.conf import (
+    MODELS_PATH,
+    MASK_OUTPUTS_PATH,
+    SAMPLES_OUTPUTS_PATH,
+    MORPH_KERNEL_SIZE,
+    FRAME_SAMPLES_SIZE
+)
 
 
 
@@ -127,7 +133,8 @@ class MaskCreator():
             os.makedirs(self.samples_output_path, exist_ok=True)
 
         mask_path_list = []
-        for image_path in glob.glob(input_images_path):
+        sorted_images = sorted(glob.glob(input_images_path), key=lambda s: int(os.path.basename(s).split('frame_')[1].split('.png')[0]))
+        for image_path in sorted_images[:FRAME_SAMPLES_SIZE]:
             mask_path = self.create_mask(image_path)
             if mask_path is not None:
                 mask_path_list.append(mask_path)

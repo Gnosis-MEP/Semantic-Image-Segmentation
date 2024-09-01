@@ -10,6 +10,7 @@ SAMPLES_OUTPUTS_PATH = os.path.join(PROJECT_ROOT, 'outputs', 'samples')
 
 MORPH_KERNEL_SIZE = config('MORPH_KERNEL_SIZE', default=100)
 
+FRAME_SAMPLES_SIZE = config('FRAME_SAMPLES_SIZE', default=300)
 
 REDIS_ADDRESS = config('REDIS_ADDRESS', default='localhost')
 REDIS_PORT = config('REDIS_PORT', default='6379')
