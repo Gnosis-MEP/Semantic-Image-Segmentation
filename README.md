@@ -29,7 +29,7 @@ $ ./semantic_image_segmentation/OI_mask_creator.py <input_dir> <sub_dataset_id> 
 
 Example:
 ```
-$ ./semantic_image_segmentation/OI_mask_creator.py ../Datasets/HS-D-B-1 HS-D-B-1-10S car,person
+$ ./semantic_image_segmentation/OI_mask_creator.py ../Datasets/Frames/HS-D-B-1 HS-D-B-1-10S car,person
 ```
 
 Outputs generated at:
